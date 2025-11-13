@@ -16,6 +16,7 @@ load_dotenv(env_file, override=True)
 
 from flask_mail import Mail, Message
 
+# Initialize Flask app
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'default_dev_secret_key')
 
