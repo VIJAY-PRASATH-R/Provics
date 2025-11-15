@@ -1,3 +1,4 @@
+# Flask imports
 from flask import Flask, render_template, request, redirect, url_for, session, flash, send_file
 from models import db, User, IndustrialVisit, Application, MoU, Notification, Review
 from datetime import datetime
