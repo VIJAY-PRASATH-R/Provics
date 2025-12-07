@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 
+
 def extract_keywords(text):
     if not text:
         return set()
