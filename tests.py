@@ -2,6 +2,7 @@
 import unittest
 from app import app, db, User
 
+
 class IVPlannerTestCase(unittest.TestCase):
    def setUp(self):
         """Set up test database and client"""
