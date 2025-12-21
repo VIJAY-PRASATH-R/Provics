@@ -9,7 +9,6 @@ from fpdf import FPDF
 from dotenv import load_dotenv
 from whitenoise import WhiteNoise
 
-
 # Load environment variables
 # Load environment variables (Force Override)
 from dotenv import load_dotenv, find_dotenv
