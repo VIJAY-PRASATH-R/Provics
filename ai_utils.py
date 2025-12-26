@@ -3,7 +3,7 @@ from collections import Counter
 
 
 def extract_keywords(text):
-    if not text:
+   if not text:
         return set()
     # Simple stop words list (can be expanded)
     stop_words = {'and', 'the', 'is', 'in', 'at', 'of', 'for', 'to', 'a', 'an', 'with', 'on', 'by'}
