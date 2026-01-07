@@ -4,7 +4,7 @@ from app import app, db, User
 
 
 class IVPlannerTestCase(unittest.TestCase):
-   def setUp(self):
+  def setUp(self):
         """Set up test database and client"""
         app.config['TESTING'] = True
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'
