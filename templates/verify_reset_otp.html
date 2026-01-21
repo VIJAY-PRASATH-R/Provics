@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}Verify OTP | Provics{% endblock %}
+
+{% block content %}
+<div class="container form-container" style="max-width: 400px; margin-top: 4rem;">
+    <div class="dashboard-card" style="padding: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 1rem; color: var(--primary-color);">Verify OTP</h2>
+        <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">
+            Check your email for the 6-digit code.
+        </p>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="otp" class="form-label">Enter OTP</label>
+                <input type="text" id="otp" name="otp" class="form-input"
+                    style="text-align: center; letter-spacing: 4px; font-size: 1.2rem;" maxlength="6" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Verify Code</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
