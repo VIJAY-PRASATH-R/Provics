@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Home | IV Planner & Connector{% endblock %}
+{% block title %}Home | Provics{% endblock %}
 
 {% block content %}
 <section class="hero">
@@ -10,18 +10,22 @@
             <p class="hero-subtitle">The seamless platform for managing Industrial Visits. Connect students, colleges,
                 and industry leaders in one unified ecosystem.</p>
             <div class="hero-buttons">
-                <a href="#" class="btn btn-primary">Get Started</a>
-                <a href="#" class="btn btn-secondary">Learn More</a>
+                <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
         <div class="hero-visual">
-            <!-- Placeholder for visual/illustration -->
-            <div class="visual-box"></div>
+            <!-- Logo visual -->
+            <div class="visual-box"
+                style="background: transparent; display: flex; align-items: center; justify-content: center;">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Provics Logo"
+                    style="max-width: 100%; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));">
+            </div>
         </div>
     </div>
 </section>
 
-<section class="features">
+<section class="features" id="features">
     <div class="container">
         <div class="section-header">
             <h2>Empower Your Growth</h2>
