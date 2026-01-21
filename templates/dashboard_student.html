@@ -1,0 +1,198 @@
+{% extends "base.html" %}
+
+{% block title %}Student Dashboard | Provics{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: 2rem; padding-bottom: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <div>
+            <h1 style="color: var(--primary-color); font-size: 2rem;">Student Dashboard</h1>
+            <p style="color: var(--text-color);">Welcome back, <span style="font-weight: 600;">{{ user.name }}</span>!
+            </p>
+        </div>
+        <a href="{{ url_for('logout') }}" class="btn btn-secondary">Logout</a>
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div style="padding: 0.75rem; border-radius: 0.375rem; margin-bottom: 1.5rem; 
+                      background-color: {% if category == 'error' %}#fee2e2{% else %}#dcfce7{% endif %}; 
+                      color: {% if category == 'error' %}#991b1b{% else %}#166534{% endif %};">
+        {{ message }}
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+        <!-- Left Column: Available Visits -->
+        <div>
+            <!-- AI Recommendations Section -->
+            {% if recommendations %}
+            <div
+                style="margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border-radius: var(--radius-md); border: 1px solid #bae6fd;">
+                <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                    <span style="font-size: 1.5rem;">✨</span>
+                    <h2 style="color: #0369a1; margin: 0; font-size: 1.25rem;">AI Recommended for You</h2>
+                </div>
+                <p style="font-size: 0.9rem; color: #0c4a6e; margin-bottom: 1rem;">Based on your skills: <strong>{{
+                        user.skills }}</strong></p>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
+                    {% for item in recommendations %}
+                    <div
+                        style="background: white; padding: 1rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span
+                                style="font-size: 0.75rem; font-weight: bold; color: #059669; background: #d1fae5; padding: 0.2rem 0.5rem; border-radius: 99px;">
+                                {{ item.score }}% Match
+                            </span>
+                        </div>
+                        <h4 style="font-size: 1rem; margin-bottom: 0.25rem;">{{ item.visit.title }}</h4>
+                        <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.5rem;">{{ item.visit.company_name
+                            }}</p>
+                        <a href="{{ url_for('apply_visit', visit_id=item.visit.id) }}" class="btn btn-primary"
+                            style="padding: 0.4rem 0.8rem; font-size: 0.8rem; width: 100%; text-align: center;">Apply
+                            Now</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 style="color: var(--primary-color);">Browse Opportunities</h2>
+            </div>
+
+            <!-- Search & Filter Bar -->
+            <form action="{{ url_for('student_dashboard') }}" method="GET"
+                style="margin-bottom: 1.5rem; display: flex; gap: 0.5rem;">
+                <input type="text" name="search" placeholder="Search by title or company..."
+                    value="{{ request.args.get('search', '') }}"
+                    style="flex: 1; padding: 0.6rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+
+                <select name="type"
+                    style="padding: 0.6rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: white;">
+                    <option value="">All Types</option>
+                    <option value="Industrial Visit" {% if request.args.get('type')=='Industrial Visit' %}selected{%
+                        endif %}>Industrial Visit</option>
+                    <option value="Internship" {% if request.args.get('type')=='Internship' %}selected{% endif %}>
+                        Internship</option>
+                    <option value="Mentorship" {% if request.args.get('type')=='Mentorship' %}selected{% endif %}>
+                        Mentorship</option>
+                </select>
+
+                <button type="submit" class="btn btn-primary" style="padding: 0.6rem 1rem;">Search</button>
+            </form>
+
+            {% if visits %}
+            <div style="display: grid; gap: 1rem;">
+                {% for visit in visits %}
+                <div
+                    style="background: white; padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                        <h3 style="font-size: 1.1rem;">{{ visit.title }}</h3>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <span
+                                style="font-size: 0.85rem; background: #e0f2fe; color: #0369a1; padding: 0.25rem 0.5rem; border-radius: 4px;">{{
+                                visit.company_name }}</span>
+                            <span
+                                style="font-size: 0.85rem; background: #f3e8ff; color: #7e22ce; padding: 0.25rem 0.5rem; border-radius: 4px;">{{
+                                visit.visit_type }}</span>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+                        📅 {{ visit.date.strftime('%Y-%m-%d') }} &nbsp;|&nbsp; 📍 {{ visit.location }}
+                    </p>
+                    <p style="color: var(--text-color); margin-bottom: 1rem; font-size: 0.95rem;">{{ visit.description
+                        }}</p>
+                    <a href="{{ url_for('apply_visit', visit_id=visit.id) }}" class="btn btn-primary"
+                        style="font-size: 0.9rem;">Apply Now</a>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div
+                style="text-align: center; padding: 3rem; background: white; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                <p style="color: #64748b;">No opportunities found matching your criteria.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right Column: My Applications -->
+        <div>
+            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">My Applications</h2>
+            {% if applications %}
+            <div
+                style="background: white; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+                {% for app in applications %}
+                <div style="padding: 1rem; border-bottom: 1px solid var(--border-color);">
+                    <div style="font-weight: 600; font-size: 0.95rem; margin-bottom: 0.25rem;">{{ app.visit.title }}
+                    </div>
+                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 0.25rem;">{{ app.visit.company_name }}
+                    </div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 0.8rem; color: #64748b;">{{ app.applied_date.strftime('%b %d') }}</span>
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <span
+                                style="font-size: 0.8rem; padding: 0.1rem 0.5rem; border-radius: 99px;
+                                {% if app.status == 'accepted' %}background: #dcfce7; color: #166534;{% else %}background: #f1f5f9; color: #475569;{% endif %}">
+                                {{ app.status|title }}
+                            </span>
+                            {% if app.status == 'accepted' %}
+                            <button onclick="openReviewModal('{{ app.visit.id }}', '{{ app.visit.title }}')"
+                                style="font-size: 0.7rem; padding: 0.2rem 0.5rem; background: #fbbf24; border: none; border-radius: 4px; cursor: pointer;">Rate</button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div
+                style="background: white; padding: 1.5rem; border-radius: var(--radius-md); border: 1px solid var(--border-color); text-align: center;">
+                <p style="font-size: 0.9rem; color: #64748b;">You haven't applied to any opportunities yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Simple Review Modal -->
+<div id="reviewModal"
+    style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px;">
+        <h3 id="reviewTitle" style="margin-bottom: 1rem;">Rate Visit</h3>
+        <form id="reviewForm" method="POST" action="">
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">Rating</label>
+                <select name="rating" style="width: 100%; padding: 0.5rem;">
+                    <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                    <option value="4">⭐⭐⭐⭐ (Good)</option>
+                    <option value="3">⭐⭐⭐ (Average)</option>
+                    <option value="2">⭐⭐ (Poor)</option>
+                    <option value="1">⭐ (Terrible)</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 1rem;">
+                <label style="display: block; margin-bottom: 0.5rem;">Comment</label>
+                <textarea name="comment" rows="3" style="width: 100%; padding: 0.5rem;"></textarea>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                <button type="button" onclick="document.getElementById('reviewModal').style.display='none'"
+                    class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openReviewModal(id, title) {
+        document.getElementById('reviewModal').style.display = 'flex';
+        document.getElementById('reviewTitle').innerText = 'Rate: ' + title;
+        document.getElementById('reviewForm').action = '/visit/review/' + id;
+    }
+</script>
+{% endblock %}

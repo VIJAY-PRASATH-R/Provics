@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+
+{% block title %}Provider Dashboard | IV Planner{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="page-header">
+        <div>
+            <h1 class="page-title">Provider Dashboard</h1>
+            <p class="welcome-text">Welcome back, <span style="font-weight: 600;">{{ user.name }}</span>!</p>
+        </div>
+    </div>
+
+    <!-- Stats & Actions Area -->
+    <div class="features-grid"
+        style="margin-bottom: 3rem; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="feature-card">
+            <h3>Total Applications</h3>
+            <p style="font-size: 2rem; font-weight: 700; color: var(--accent-color);">{{ stats.total_applications }}</p>
+            <p class="text-muted">Across {{ stats.total_visits }} visits.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Avg Rating</h3>
+            <p style="font-size: 2rem; font-weight: 700; color: #f59e0b;">{{ stats.avg_rating }} ★</p>
+            <p class="text-muted">From {{ stats.review_count }} reviews.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Active MoUs</h3>
+            <p style="font-size: 2rem; font-weight: 700; color: #16a34a;">{{ stats.active_mous }}</p>
+            <p class="text-muted">Colleges partnered.</p>
+        </div>
+        <div class="feature-card"
+            style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed var(--accent-color); background: #f0f9ff;">
+            <p class="text-muted" style="margin-bottom: 0.5rem; font-size: 0.9rem;">Looking for talent?</p>
+            <a href="{{ url_for('create_visit') }}" class="btn btn-primary" style="width: 100%; text-align: center;">+
+                Create Opportunity</a>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- Left: MoU Requests -->
+        <div>
+            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">Pending MoU Requests</h2>
+            {% if mou_requests %}
+            {% for mou in mou_requests %}
+            <div class="dashboard-card" style="border-left: 4px solid var(--accent-color);">
+                <div style="margin-bottom: 1rem;">
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">Request from College #{{ mou.college_id }}
+                    </h3>
+                    <p class="text-muted"
+                        style="font-size: 0.9rem; background: #f8fafc; padding: 0.75rem; border-radius: 0.375rem;">"{{
+                        mou.terms }}"</p>
+                </div>
+                <form action="{{ url_for('approve_mou', mou_id=mou.id) }}" method="POST">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1rem;">
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem;">Start Date</label>
+                            <input type="date" name="start_date" class="form-input" style="padding: 0.4rem;" required>
+                        </div>
+                        <div>
+                            <label class="form-label" style="font-size: 0.8rem;">End Date</label>
+                            <input type="date" name="end_date" class="form-input" style="padding: 0.4rem;" required>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1; font-size: 0.85rem;">Accept &
+                            Sign</button>
+                        <a href="{{ url_for('reject_mou', mou_id=mou.id) }}" class="btn btn-secondary"
+                            style="color: #dc2626; font-size: 0.85rem;">Reject</a>
+                    </div>
+                </form>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="dashboard-card" style="text-align: center; padding: 2rem;">
+                <p class="text-muted">No pending MoU requests.</p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Right: Posted Visits (Existing) -->
+        <div>
+            <h2 style="margin-bottom: 1rem; color: var(--primary-color);">Your Posted Visits</h2>
+            {% if visits %}
+            {% for visit in visits %}
+            <div class="dashboard-card" style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="font-size: 1.1rem; margin-bottom: 0.25rem;">{{ visit.title }}</h3>
+                    <div class="text-muted text-sm">
+                        <span>📅 {{ visit.date.strftime('%Y-%m-%d') }}</span> &bull;
+                        <span>📍 {{ visit.location }}</span>
+                    </div>
+                </div>
+                <div style="text-align: right;">
+                    <span class="badge 
+                            {% if visit.status == 'approved' %}badge-success
+                            {% elif visit.status == 'rejected' %}badge-error
+                            {% else %}badge-warning{% endif %}">
+                        {{ visit.status|title }}
+                    </span>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="dashboard-card" style="text-align: center;">
+                <p class="text-muted">You haven't posted any visits yet.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
