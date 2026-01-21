@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile | Provics{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; padding-top: 3rem; padding-bottom: 3rem;">
+    <div class="feature-card" style="padding: 2.5rem; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+        <h1 style="color: var(--primary-color); margin-bottom: 0.5rem;">Edit Profile</h1>
+        <p style="color: var(--text-color); margin-bottom: 2rem;">Update your professional details to stand out to
+            companies.</p>
+
+        <form method="POST">
+            <div style="margin-bottom: 1.5rem;">
+                <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Full Name</label>
+                <input type="text" id="name" value="{{ user.name }}" disabled
+                    style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; background: #f9f9f9; border-radius: var(--radius-md);">
+                <small style="color: #666;">Name cannot be changed. Contact admin for corrections.</small>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label for="bio" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Bio / Summary</label>
+                <textarea id="bio" name="bio" rows="4"
+                    placeholder="Briefly describe yourself, your year of study, and interests..."
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">{{ user.bio or '' }}</textarea>
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label for="skills" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Skills (Comma
+                    separated)</label>
+                <input type="text" id="skills" name="skills" placeholder="e.g. Python, Data Analysis, Leadership"
+                    value="{{ user.skills or '' }}"
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            </div>
+
+            <div style="margin-bottom: 2rem;">
+                <label for="resume_link" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Portfolio /
+                    Resume / LinkedIn Link</label>
+                <input type="url" id="resume_link" name="resume_link" placeholder="https://linkedin.com/in/..."
+                    value="{{ user.resume_link or '' }}"
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Save Changes</button>
+                <a href="{{ url_for('student_dashboard') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+        <div style="margin-top: 3rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem;">
+            <h3 style="color: #dc2626; font-size: 1.1rem; margin-bottom: 0.5rem;">Danger Zone</h3>
+            <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">Once you delete your account, there is no
+                going back. Please be certain.</p>
+            <a href="{{ url_for('delete_account') }}" class="btn"
+                style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; text-decoration: none;">Delete
+                Account</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

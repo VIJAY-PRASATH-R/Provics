@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Verify Deletion | Provics{% endblock %}
+
+{% block content %}
+<div class="container form-container" style="max-width: 400px; margin-top: 4rem;">
+    <div class="dashboard-card" style="padding: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 1rem; color: #dc2626;">Verify Deletion</h2>
+        <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">
+            An OTP has been sent to your email. Please enter it below to confirm.
+        </p>
+
+        <form method="POST" action="{{ url_for('verify_delete_account') }}">
+            <div class="form-group">
+                <label for="otp" class="form-label">Enter 6-Digit OTP</label>
+                <input type="text" id="otp" name="otp" class="form-input"
+                    style="text-align: center; letter-spacing: 4px; font-size: 1.2rem;" maxlength="6" required>
+            </div>
+
+            <button type="submit" class="btn" style="width: 100%; background: #dc2626; color: white;">Confirm
+                Delete</button>
+        </form>
+
+        <div style="text-align: center; margin-top: 1rem;">
+            <a href="{{ url_for('delete_account') }}" style="font-size: 0.9rem; color: #64748b;">Resend OTP</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

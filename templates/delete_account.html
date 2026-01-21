@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Account | Provics{% endblock %}
+
+{% block content %}
+<div class="container form-container" style="max-width: 500px; margin-top: 4rem;">
+    <div class="dashboard-card" style="padding: 2rem; border-color: #fca5a5;">
+        <h2 style="text-align: center; margin-bottom: 1rem; color: #dc2626;">Delete Account</h2>
+        <p style="color: #64748b; text-align: center; margin-bottom: 2rem;">
+            Warning: This action is permanent. All your data, including profile details and applications, will be
+            erased.
+        </p>
+
+        <form method="POST" action="{{ url_for('delete_account') }}">
+
+            <div
+                style="background: #fff1f2; padding: 1rem; border-radius: 8px; border: 1px solid #fecaca; margin-bottom: 1.5rem;">
+                <p style="font-size: 0.9rem; color: #991b1b; margin-bottom: 0;">
+                    To proceed, we will send a <strong>One-Time Password (OTP)</strong> to your registered email
+                    address: <strong>{{ user.email }}</strong>.
+                </p>
+            </div>
+
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn"
+                    style="background: #dc2626; color: white; padding: 0.6rem 1.5rem; text-decoration: none; border-radius: 6px; font-weight: 500;">Send
+                    OTP</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
