@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Create Opportunity | Provics{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px; padding-top: 2rem; padding-bottom: 2rem;">
+    <div class="feature-card" style="padding: 2rem;">
+        <h1 style="color: var(--primary-color); margin-bottom: 1.5rem;">Post Opportunity</h1>
+
+        <form action="{{ url_for('create_visit') }}" method="POST">
+            <div style="margin-bottom: 1rem;">
+                <label for="visit_type" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Opportunity
+                    Type</label>
+                <select id="visit_type" name="visit_type"
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--white);">
+                    <option value="Industrial Visit">Industrial Visit</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Mentorship">Mentorship</option>
+                </select>
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="title" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Title</label>
+                <input type="text" id="title" name="title" placeholder="e.g. AI Factory Tour" required
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="date" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Date (or Start
+                    Date)</label>
+                <input type="date" id="date" name="date" required
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+                <label for="location" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Location</label>
+                <input type="text" id="location" name="location" placeholder="e.g. Bangalore Campus, Block A" required
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md);">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+                <label for="description"
+                    style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Description</label>
+                <textarea id="description" name="description" rows="4"
+                    placeholder="Describe requirements and what students will learn..." required
+                    style="width: 100%; padding: 0.75rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit;"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary" style="flex: 1;">Publish</button>
+                <a href="{{ url_for('provider_dashboard') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
